@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			ul,ol{list-style: none;}
+			a{text-decoration: none;}
+			#box{width:500px;height:375px;background:green;margin:20px auto;overflow: hidden;position:relative;}
+			#ul1{width:2500px;height:375px;position:absolute;}
+			#ul1 li{width:500px;height:375px;float:left;}
+			#ul2{position:absolute;right:10px;bottom: 10px;}
+			#ul2 li{width:20px;height:20px;border:1px solid #666;border-radius:50%;color:666;text-align:center;line-height:20px;padding:0 5px;margin:0 5px;float:left;font-size:16px;cursor: pointer;}
+			#ul2 .active{color: #fff;background:red;}
+			#btn span{
+				position: absolute;
+				top: 100px;
+				width: 50px;
+				height: 100px;
+				background: black;
+				opacity: .5;
+				font-size: 40px;
+				text-align: center;
+				line-height: 100px;
+				color: white;
+				cursor: pointer;
+			}
+			#btn .prev{
+				position: absolute;
+				right: 20px;
+			}
+			#btn .next{
+				position: absolute;
+				left:10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<ul id="ul1">
+				<li><a href="#"><img src="img/img04.jpg"/></a></li>
+				<li><a href="#"><img src="img/img05.jpg"/></a></li>
+				<li><a href="#"><img src="img/img06.jpg"/></a></li>
+				<li><a href="#"><img src="img/img07.jpg"/></a></li>
+				<li><a href="#"><img src="img/img04.jpg"/></a></li>
+			</ul>
+			<ul id="ul2">
+				<li class="active">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+			</ul>
+			<div id="btn">
+				<span class="prev">></span>
+				<span class="next"><</span>
+			</div>
+		</div>
+		<script src="js/startmove.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var oDiv=document.getElementById("box");
+			var oUl=document.getElementById("ul1");
+			var aLi=oUl.getElementsByTagName("li");
+			var oUl1=document.getElementById("ul2");
+			var aLi1=oUl1.getElementsByTagName("li");
+			var oPrev = oDiv.getElementsByClassName("prev")[0];
+			var oNext = oDiv.getElementsByClassName("next")[0];
+			var i=0;
+			var timer=setInterval(move,3000);
+			function move(){
+				if(i>=aLi.length-1){
+					oUl.style.left=0+"px";
+					i=0;
+				}
+				i++;
+				startmove(oUl,{"left":-500*i});
+				for(j=0;j<aLi1.length;j++){
+					aLi1[j].className="";					
+				}
+				if(i>=aLi.length-1){
+					aLi1[0].className="active";
+				}else{
+					aLi1[i].className="active";
+			}				
+		}
+			for(j=0;j<aLi1.length;j++){	
+				aLi1[j].index=j;
+				aLi1[j].onmouseover=function(){
+					for(k=0;k<aLi1.length;k++){
+						aLi1[k].className="";
+				    }
+						clearInterval(timer);
+						aLi1[this.index].className="active";
+						startmove(oUl,{"left":-500*this.index})
+					}
+						aLi1[j].onmouseout=function(){
+						timer=setInterval(move,3000);
+				}
+				
+			}
+			oPrev.onmousedown=function(){
+				clearInterval(timer);
+				move();
+			}
+			oPrev.onmouseup=function(){
+				timer=setInterval(move,3000);
+			}
+			oNext.onmousedown=function(){
+				clearInterval(timer);
+				if(i<=0){
+					oUl.style.left = -(aLi.length-1)*500 + "px";
+					i = aLi.length-1-2;
+				}else{
+					i = i -2;
+				}
+				move();
+			}
+			oNext.onmouseup=function(){
+				timer=setInterval(move,3000);
+			}
+			
+//			缓冲图片轮播
+//			var timer=setInterval(move,3000);
+//			function move(){
+//				
+//				if(i>=aLi.length-1){
+//					oUl.style.left=0+"px";
+//					i=0;
+//				}
+//				i++;
+//				startmove(oUl,{"left":-500*i});
+//				for(j=0;j<aLi1.length;j++){
+//					aLi1[j].className="";
+//				}
+//				if(i>=aLi.length-1){
+//					aLi1[0].className="active";
+//					
+//				}else{
+//					aLi1[i].className="active";
+//				}
+//			}
+//			for(j=0;j<aLi1.length;j++){
+//				aLi1[j].index=j;			
+//				aLi1[j].onmouseover=function(){
+//					clearInterval(timer)
+//					for(k=0;k<aLi1.length;k++){
+//						aLi1[k].className="";
+//					}
+//					i=this.index;
+//					startmove(oUl,{"left":-500*i});				
+//					aLi1[i].className="active";
+//			}
+//				aLi1[j].onmouseout=function(){
+//					timer=setInterval(move,3000);
+//		    }
+//	}
+//			oPrev.onmousedown = function(){
+//				clearInterval(timer)
+//				move();
+//			}
+//			oPrev.onmouseup=function(){
+//				timer=setInterval(move,3000);
+//			}
+//			oNext.onmousedown=function(){
+//				clearInterval(timer);
+//				if(i<=0){
+//					oUl.style.left = -(aLi.length-1)*500 + "px";
+//					i = aLi.length-1-2;
+//				}else{
+//					i = i -2;
+//				}
+//				move();
+//			}
+//			oNext.onmouseup=function(){
+//				timer=setInterval(move,3000);
+//			}
+//			
+//不缓冲的图片轮播
+//var timer=setInterval(move,3000)
+//			function move(){
+//				
+//				i++;
+//				oUl.style.left=-500*i+"px";
+//				console.log(i);
+//				if(i>=aLi.length-1){
+//					i=0;
+//				}
+//			}
+//			
+		</script>
+	</body>
+</html>
